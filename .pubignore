@@ -1,0 +1,44 @@
+# Repository-only material
+.project-memory/
+AGENTS.md
+screenshots/
+
+# Dart and Flutter generated output
+.dart_tool/
+.packages
+.pub/
+build/
+doc/api/
+example/.dart_tool/
+example/.flutter-plugins
+example/.flutter-plugins-dependencies
+example/.packages
+example/.pub/
+example/build/
+
+# Android generated output and local configuration
+example/android/.gradle/
+example/android/app/debug/
+example/android/app/profile/
+example/android/app/release/
+example/android/captures/
+example/android/gradle/wrapper/gradle-wrapper.jar
+example/android/gradlew
+example/android/gradlew.bat
+example/android/local.properties
+
+# iOS generated output and local configuration
+example/ios/Flutter/.last_build_id
+example/ios/Flutter/ephemeral/
+example/ios/Flutter/Generated.xcconfig
+example/ios/Flutter/flutter_export_environment.sh
+example/ios/Pods/
+example/ios/.symlinks/
+example/ios/Runner/GeneratedPluginRegistrant.*
+example/ios/xcuserdata/
+
+# Editor and OS metadata
+.DS_Store
+.idea/
+.vscode/
+*.iml
