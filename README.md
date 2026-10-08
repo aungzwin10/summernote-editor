@@ -2,7 +2,7 @@
 
 A Summernote-based rich-text HTML editor for Flutter on Android, iOS, and web.
 
-Version 1.0.0 embeds **Summernote Lite 0.9.1** and uses Summernote's own toolbar on
+Version 1.0.1 embeds **Summernote Lite 0.9.1** and uses Summernote's own toolbar on
 every supported platform. The previous Flutter-native toolbar API has been removed.
 
 `summernote_editor` is a maintained successor to
@@ -26,7 +26,7 @@ Add the package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  summernote_editor: ^1.0.0
+  summernote_editor: ^1.0.1
 ```
 
 Then import the public library:

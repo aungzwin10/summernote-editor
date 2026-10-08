@@ -1,6 +1,6 @@
 name: summernote_editor
 description: Summernote-powered rich HTML editor for Flutter on Android, iOS, and web.
-version: 1.0.0
+version: 1.0.1
 repository: https://github.com/aungzwin10/summernote-editor
 issue_tracker: https://github.com/aungzwin10/summernote-editor/issues
 
