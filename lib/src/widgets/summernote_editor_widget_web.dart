@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:summernote_editor/src/summernote_range_workarounds.dart';
 import 'package:summernote_editor/src/summernote_selection.dart';
-import 'package:summernote_editor/src/summernote_theme.dart';
 import 'package:summernote_editor/src/summernote_toolbar.dart';
 import 'package:summernote_editor/src/web_message.dart';
 import 'package:summernote_editor/summernote_editor.dart';
@@ -176,13 +175,6 @@ class _SummernoteEditorWidgetWebState extends State<SummernoteEditorWidget> {
       }
     }
     summernoteCallbacks = summernoteCallbacks + '}';
-    final usesDarkMode =
-        (Theme.of(context).brightness == Brightness.dark ||
-            widget.summernoteEditorOptions.darkMode == true) &&
-        widget.summernoteEditorOptions.darkMode != false;
-    final editorTheme = usesDarkMode
-        ? '<link href="assets/packages/summernote_editor/assets/summernote-lite-dark.css" rel="stylesheet">'
-        : summernoteLightThemeStyle;
     var jsCallbacks = '';
     if (widget.callbacks != null) {
       jsCallbacks = _getJavaScriptCallbacks(widget.callbacks!);
@@ -608,7 +600,6 @@ class _SummernoteEditorWidgetWebState extends State<SummernoteEditorWidget> {
     var htmlString = await rootBundle.loadString(filePath);
     if (!mounted) return;
     htmlString = htmlString
-        .replaceFirst('<!--darkCSS-->', editorTheme)
         .replaceFirst('<!--headString-->', headString)
         .replaceFirst('<!--summernoteScripts-->', summernoteScripts)
         .replaceFirst(

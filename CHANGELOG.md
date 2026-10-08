@@ -15,8 +15,7 @@
 * Disable manual editor resizing and stop scrolling the parent on every typed character
 * Expand auto-height editors around visible Summernote dropdowns, popovers, and dialogs so they
   are not clipped by the WebView or iframe boundary
-* Keep dark-mode font dropdown labels readable and prevent fullscreen from entering an auto-height
-  resize feedback loop
+* Prevent fullscreen from entering an auto-height resize feedback loop
 * Consolidate web callback dispatch into one disposable listener, scope controller responses per
   editor, and register mobile bridge handlers only once across page reloads
 * Correlate concurrent web controller reads, use exact iframe command matching, and safely encode
@@ -24,9 +23,8 @@
 * Coalesce auto-height measurements to one animation frame and suppress unchanged height messages
 * Make callback and configuration payloads immutable and harden upload metadata parsing and
   image-reader error routing
-* Keep forced-light editors readable inside dark Flutter surfaces and initialize editor content,
-  disabled state, input mode, and height before firing `onInit`
+* Initialize editor content, disabled state, input mode, and height before firing `onInit`
 * Include a responsive two-editor example covering independent controllers, seeded HTML and an
-  embedded image, forced light/dark modes, and concurrent reads
+  embedded image, per-editor enable/disable actions, and concurrent reads
 * Stop editor platform views from intercepting input or painting above Flutter dialogs and popup
   routes, while preserving editor state and restoring interaction after dismissal

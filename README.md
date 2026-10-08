@@ -15,7 +15,6 @@ Copyright (c) 2020 Tanay Neotia and remains acknowledged under the included MIT 
 - Summernote Lite toolbar, dialogs, code view, tables, links, images, and video
 - Content-based height by default, with no nested vertical editor scroll
 - Optional fixed-height mode
-- Light and dark themes
 - Controller commands and Summernote callbacks
 - Initial HTML, character limits, spellcheck, custom Summernote options, and custom templates
 - Mobile and web JavaScript hooks
@@ -162,7 +161,6 @@ should be guarded with `kIsWeb` where appropriate. On mobile, issue startup comm
 - `androidUseHybridComposition`: Android WebView composition mode
 - `characterLimit`: maximum text character count
 - `customOptions`: raw Summernote initialization properties
-- `darkMode`: `null` follows Flutter, `true` forces dark, `false` forces light
 - `disabled`: start with editing and toolbar controls disabled
 - `filePath`: custom HTML template
 - `hint` and `initialText`
@@ -214,8 +212,8 @@ Mobile suggestions are produced by a Dart callback. Web suggestions are filtered
 ## Example app
 
 The bundled example is intentionally small enough to use as a starting point. It demonstrates two
-independent editors on one responsive page, initial HTML with an embedded image, forced light and
-dark editor modes, safe controller use after `onInit`, and reading both editor values concurrently.
+independent editors on one responsive page, initial HTML with an embedded image, per-editor
+enable/disable actions, safe controller use after `onInit`, and concurrent reads.
 
 Run it with:
 
@@ -231,7 +229,6 @@ injection markers:
 
 ```html
 <head>
-  <!--darkCSS-->
   <!--headString-->
 </head>
 <body>

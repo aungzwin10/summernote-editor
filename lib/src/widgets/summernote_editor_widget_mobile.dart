@@ -13,7 +13,6 @@ import 'package:summernote_editor/summernote_editor.dart'
     hide NavigationActionPolicy, UserScript, ContextMenu;
 import 'package:summernote_editor/src/summernote_range_workarounds.dart';
 import 'package:summernote_editor/src/summernote_selection.dart';
-import 'package:summernote_editor/src/summernote_theme.dart';
 import 'package:summernote_editor/src/summernote_toolbar.dart';
 import 'package:summernote_editor/utils/utils.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -594,18 +593,6 @@ class _SummernoteEditorWidgetMobileState extends State<SummernoteEditorWidget> {
                       await controller.evaluateJavascript(
                         source:
                             "document.getElementsByClassName('note-editable')[0].setAttribute('inputmode', '${widget.summernoteEditorOptions.inputType.name}');",
-                      );
-                      final usesDarkMode =
-                          (Theme.of(context).brightness == Brightness.dark ||
-                              widget.summernoteEditorOptions.darkMode ==
-                                  true) &&
-                          widget.summernoteEditorOptions.darkMode != false;
-                      final editorTheme = usesDarkMode
-                          ? '<link href="${(widget.summernoteEditorOptions.filePath != null ? "file:///android_asset/flutter_assets/packages/summernote_editor/assets/" : "") + "summernote-lite-dark.css"}" rel="stylesheet">'
-                          : summernoteLightThemeStyle;
-                      await controller.evaluateJavascript(
-                        source:
-                            "\$('head').append(${jsonEncode(editorTheme)});",
                       );
                       //set the text once the editor is loaded
                       if (widget.summernoteEditorOptions.initialText != null) {

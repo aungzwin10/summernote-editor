@@ -11,7 +11,6 @@ class SummernoteEditorOptions {
     this.adjustHeightForKeyboard = true,
     this.characterLimit,
     this.customOptions = '',
-    this.darkMode,
     this.disabled = false,
     this.filePath,
     this.hint,
@@ -49,10 +48,6 @@ class SummernoteEditorOptions {
   /// object and must end with a comma when it is non-empty. It can be used to
   /// replace the package's default built-in Summernote toolbar.
   final String customOptions;
-
-  /// `null` follows Flutter's theme, `false` forces light mode, and `true`
-  /// forces dark mode.
-  final bool? darkMode;
 
   /// Whether the editor starts disabled.
   final bool disabled;

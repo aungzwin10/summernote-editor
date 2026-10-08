@@ -16,5 +16,5 @@ Vendored files and upstream SHA-256 checksums:
 - `font/summernote.woff`: `f9d40b380e26ea6c1f579dd47ec28da9c8eb414882651e0adba199bb31f8cc62`
 - `font/summernote.woff2`: `9c7cb1a4e1341ce24398f7742ca9ea3014dac38829aaa0cc2d0c74a8195915de`
 
-Project-specific dark-mode and Flutter integration behavior remains outside the
-upstream minified assets so future upgrades can replace them byte-for-byte.
+Project-specific Flutter integration behavior remains outside the upstream
+minified assets so future upgrades can replace them byte-for-byte.

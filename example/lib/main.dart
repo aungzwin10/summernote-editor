@@ -3,68 +3,36 @@ import 'package:summernote_editor/summernote_editor.dart';
 
 void main() => runApp(const SummernoteEditorExampleApp());
 
-class SummernoteEditorExampleApp extends StatefulWidget {
+class SummernoteEditorExampleApp extends StatelessWidget {
   const SummernoteEditorExampleApp({super.key});
-
-  @override
-  State<SummernoteEditorExampleApp> createState() =>
-      _SummernoteEditorExampleAppState();
-}
-
-class _SummernoteEditorExampleAppState
-    extends State<SummernoteEditorExampleApp> {
-  ThemeMode _themeMode = ThemeMode.light;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Summernote Editor examples',
-      themeMode: _themeMode,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xff5b5bd6)),
         useMaterial3: true,
       ),
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xffa6a6ff),
-          brightness: Brightness.dark,
-        ),
-        useMaterial3: true,
-      ),
-      home: EditorExamplesPage(
-        isDark: _themeMode == ThemeMode.dark,
-        onThemeChanged: (isDark) {
-          setState(() {
-            _themeMode = isDark ? ThemeMode.dark : ThemeMode.light;
-          });
-        },
-      ),
+      home: const EditorExamplesPage(),
     );
   }
 }
 
 class EditorExamplesPage extends StatefulWidget {
-  const EditorExamplesPage({
-    super.key,
-    required this.isDark,
-    required this.onThemeChanged,
-  });
-
-  final bool isDark;
-  final ValueChanged<bool> onThemeChanged;
+  const EditorExamplesPage({super.key});
 
   @override
   State<EditorExamplesPage> createState() => _EditorExamplesPageState();
 }
 
 class _EditorExamplesPageState extends State<EditorExamplesPage> {
-  final _lightController = SummernoteEditorController();
-  final _darkController = SummernoteEditorController();
+  final _articleController = SummernoteEditorController();
+  final _notesController = SummernoteEditorController();
 
-  bool _lightReady = false;
-  bool _darkReady = false;
+  bool _articleReady = false;
+  bool _notesReady = false;
 
   Future<void> _showHtml(
     String title,
@@ -106,8 +74,8 @@ class _EditorExamplesPageState extends State<EditorExamplesPage> {
   Future<void> _compareEditors() async {
     try {
       final html = await Future.wait([
-        _lightController.getText(),
-        _darkController.getText(),
+        _articleController.getText(),
+        _notesController.getText(),
       ]);
       if (!mounted) return;
       await showDialog<void>(
@@ -120,9 +88,9 @@ class _EditorExamplesPageState extends State<EditorExamplesPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _HtmlResult(label: 'Light editor', html: html[0]),
+                  _HtmlResult(label: 'Article editor', html: html[0]),
                   const SizedBox(height: 24),
-                  _HtmlResult(label: 'Dark editor', html: html[1]),
+                  _HtmlResult(label: 'Notes editor', html: html[1]),
                 ],
               ),
             ),
@@ -147,59 +115,33 @@ class _EditorExamplesPageState extends State<EditorExamplesPage> {
   Widget build(BuildContext context) {
     final editors = [
       EditorExampleCard(
-        key: const ValueKey('light-editor'),
-        title: 'Light editor',
-        description:
-            'Forced light mode with text, a link, and an inline image.',
-        modeLabel: 'darkMode: false',
-        controller: _lightController,
-        darkMode: false,
+        key: const ValueKey('article-editor'),
+        title: 'Article editor',
+        description: 'Seeded text, a link, and an inline image.',
+        controller: _articleController,
         initialText: _seededArticle,
-        ready: _lightReady,
+        ready: _articleReady,
         onReady: () {
-          if (mounted) setState(() => _lightReady = true);
+          if (mounted) setState(() => _articleReady = true);
         },
-        onShowHtml: () => _showHtml('Light editor HTML', _lightController),
+        onShowHtml: () => _showHtml('Article editor HTML', _articleController),
       ),
       EditorExampleCard(
-        key: const ValueKey('dark-editor'),
-        title: 'Dark editor',
-        description: 'A separate controller and document, forced to dark mode.',
-        modeLabel: 'darkMode: true',
-        controller: _darkController,
-        darkMode: true,
-        initialText: _darkArticle,
-        ready: _darkReady,
+        key: const ValueKey('notes-editor'),
+        title: 'Notes editor',
+        description: 'A separate controller and independent document.',
+        controller: _notesController,
+        initialText: _notesArticle,
+        ready: _notesReady,
         onReady: () {
-          if (mounted) setState(() => _darkReady = true);
+          if (mounted) setState(() => _notesReady = true);
         },
-        onShowHtml: () => _showHtml('Dark editor HTML', _darkController),
+        onShowHtml: () => _showHtml('Notes editor HTML', _notesController),
       ),
     ];
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Summernote Editor'),
-        actions: [
-          Row(
-            children: [
-              const Icon(Icons.light_mode_outlined),
-              Switch(
-                value: widget.isDark,
-                onChanged: widget.onThemeChanged,
-                thumbIcon: WidgetStateProperty.resolveWith((states) {
-                  return Icon(
-                    states.contains(WidgetState.selected)
-                        ? Icons.dark_mode
-                        : Icons.light_mode,
-                  );
-                }),
-              ),
-              const SizedBox(width: 12),
-            ],
-          ),
-        ],
-      ),
+      appBar: AppBar(title: const Text('Summernote Editor')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Center(
@@ -214,13 +156,15 @@ class _EditorExamplesPageState extends State<EditorExamplesPage> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Each editor has its own controller, initial HTML, and color '
-                  'mode. Resize the window to see the responsive layout.',
+                  'Each editor has its own controller and initial HTML. Use '
+                  'the action buttons to enable or disable either editor.',
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 const SizedBox(height: 16),
                 FilledButton.icon(
-                  onPressed: _lightReady && _darkReady ? _compareEditors : null,
+                  onPressed: _articleReady && _notesReady
+                      ? _compareEditors
+                      : null,
                   icon: const Icon(Icons.data_object),
                   label: const Text('Read both editors'),
                 ),
@@ -255,14 +199,12 @@ class _EditorExamplesPageState extends State<EditorExamplesPage> {
   }
 }
 
-class EditorExampleCard extends StatelessWidget {
+class EditorExampleCard extends StatefulWidget {
   const EditorExampleCard({
     super.key,
     required this.title,
     required this.description,
-    required this.modeLabel,
     required this.controller,
-    required this.darkMode,
     required this.initialText,
     required this.ready,
     required this.onReady,
@@ -271,13 +213,30 @@ class EditorExampleCard extends StatelessWidget {
 
   final String title;
   final String description;
-  final String modeLabel;
   final SummernoteEditorController controller;
-  final bool darkMode;
   final String initialText;
   final bool ready;
   final VoidCallback onReady;
   final VoidCallback onShowHtml;
+
+  @override
+  State<EditorExampleCard> createState() => _EditorExampleCardState();
+}
+
+class _EditorExampleCardState extends State<EditorExampleCard> {
+  bool _editorEnabled = true;
+
+  void _toggleEditor() {
+    if (_editorEnabled) {
+      widget.controller.disable();
+    } else {
+      widget.controller.enable();
+    }
+
+    setState(() {
+      _editorEnabled = !_editorEnabled;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -288,29 +247,18 @@ class EditorExampleCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    title,
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                ),
-                Chip(label: Text(modeLabel)),
-              ],
-            ),
-            Text(description),
+            Text(widget.title, style: Theme.of(context).textTheme.titleLarge),
+            Text(widget.description),
             const SizedBox(height: 12),
             SummernoteEditor(
-              controller: controller,
+              controller: widget.controller,
               summernoteEditorOptions: SummernoteEditorOptions(
-                darkMode: darkMode,
                 hint: 'Start writing…',
-                initialText: initialText,
+                initialText: widget.initialText,
                 spellCheck: true,
               ),
               otherOptions: const OtherOptions(height: 360),
-              callbacks: Callbacks(onInit: onReady),
+              callbacks: Callbacks(onInit: widget.onReady),
             ),
             const SizedBox(height: 12),
             Wrap(
@@ -318,13 +266,24 @@ class EditorExampleCard extends StatelessWidget {
               runSpacing: 8,
               children: [
                 FilledButton.tonalIcon(
-                  onPressed: ready ? onShowHtml : null,
+                  onPressed: widget.ready ? widget.onShowHtml : null,
                   icon: const Icon(Icons.code),
                   label: const Text('Show HTML'),
                 ),
                 OutlinedButton.icon(
-                  onPressed: ready
-                      ? () => controller.insertHtml(
+                  onPressed: widget.ready ? _toggleEditor : null,
+                  icon: Icon(
+                    _editorEnabled
+                        ? Icons.lock_outline
+                        : Icons.lock_open_outlined,
+                  ),
+                  label: Text(
+                    _editorEnabled ? 'Disable editor' : 'Enable editor',
+                  ),
+                ),
+                OutlinedButton.icon(
+                  onPressed: widget.ready && _editorEnabled
+                      ? () => widget.controller.insertHtml(
                           '<p><strong>Inserted separately</strong> at '
                           '${DateTime.now().toLocal()}.</p>',
                         )
@@ -333,7 +292,9 @@ class EditorExampleCard extends StatelessWidget {
                   label: const Text('Insert HTML'),
                 ),
                 OutlinedButton.icon(
-                  onPressed: ready ? controller.clear : null,
+                  onPressed: widget.ready && _editorEnabled
+                      ? widget.controller.clear
+                      : null,
                   icon: const Icon(Icons.delete_outline),
                   label: const Text('Clear'),
                 ),
@@ -378,9 +339,9 @@ const _seededArticle = '''
 <p>Try the toolbar, then select this <a href="https://flutter.dev">link on the final line</a> to open its popover.</p>
 ''';
 
-const _darkArticle = '''
-<h2>Independent dark editor</h2>
-<p>This editor remains dark even while the surrounding Flutter app uses its light theme.</p>
+const _notesArticle = '''
+<h2>Independent notes editor</h2>
+<p>This editor has its own controller and document.</p>
 <blockquote>Multiple editors can coexist without sharing content, selection, or controller messages.</blockquote>
 <ul><li>Edit this list</li><li>Open a toolbar menu</li><li>Read both values together</li></ul>
 <p><a href="https://summernote.org">A link on the last line</a></p>
